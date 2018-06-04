@@ -5,7 +5,6 @@ const rp = require('request-promise');
 const config = Config.config;
 
 const projectId = config.projectId;
-const keyFilename = config.keyFilename;
 const managedZones = config.managedZones;
 
 const dns = new DNS({
