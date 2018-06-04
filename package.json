@@ -1,0 +1,27 @@
+{
+  "name": "cloud-ddns",
+  "version": "1.0.0",
+  "description": "DDNS based on Cloud DNS",
+  "main": "main.js",
+  "dependencies": {
+    "@google-cloud/dns": "^0.7.2",
+    "config": "^1.30.0",
+    "js-yaml": "^3.12.0",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yagihashoo/cloud-ddns.git"
+  },
+  "author": "yagihashoo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yagihashoo/cloud-ddns/issues"
+  },
+  "homepage": "https://github.com/yagihashoo/cloud-ddns#readme"
+}

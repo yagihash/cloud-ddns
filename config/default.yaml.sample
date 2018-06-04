@@ -1,0 +1,14 @@
+config:
+  projectId: 'xxxxxxxxxxxxxxxxx'
+  keyFilename: '/path/to/service-account.json'
+  slack:
+    token: 'xoxp-xxxxxxxxxxxx'
+    channel: '#home'
+    username: 'Cloud-DDNS'
+    iconEmoji: ':gcp:'
+  managedZones:
+    - name: 'xss-moe'
+      ttl: 300
+      domainNames:
+        - 'aaa.xss.moe.'
+        - '*.aaa.xss.moe.'
