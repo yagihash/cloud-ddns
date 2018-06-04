@@ -10,7 +10,7 @@ const managedZones = config.managedZones;
 
 const dns = new DNS({
   projectId: projectId,
-  keyFilename: keyFilename,
+  keyFilename: '/tmp/sa.json',
 });
 
 const zone = dns.zone('xss-moe');

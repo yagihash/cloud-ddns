@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  cloud-ddns:
+    build:
+      context: .
+      args:
+        SA_FILE: $SA_FILE
+    restart: always

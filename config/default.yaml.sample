@@ -1,6 +1,5 @@
 config:
   projectId: 'xxxxxxxxxxxxxxxxx'
-  keyFilename: '/path/to/service-account.json'
   slack:
     token: 'xoxp-xxxxxxxxxxxx'
     channel: '#home'
