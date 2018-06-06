@@ -57,7 +57,7 @@ const createSlackAttachments = (domainName, activeIp, currentIp) => JSON.stringi
   ts: Math.floor((new Date()).getTime() / 1000),
 }]);
 
-const postResultOnSlack = async (token, channel, username, iconEmoji, attachments) => {
+const postResultOnSlack = async (token, channel, username, attachments) => {
   return await rp({
     uri: 'https://slack.com/api/chat.postMessage',
     method: 'POST',
@@ -65,7 +65,6 @@ const postResultOnSlack = async (token, channel, username, iconEmoji, attachment
       token: token,
       channel: channel,
       username: username,
-      icon_emoji: iconEmoji,
       attachments: attachments,
     },
     json: true,
@@ -93,9 +92,9 @@ const main = async () => {
         zone.createChange(diff).then(function () {
           (async () => {
             const slackConfig = config.slack;
-            const { token, channel, username, iconEmoji } = slackConfig;
+            const { token, channel, username } = slackConfig;
             const attachments = createSlackAttachments(domainName, activeIp, currentIp);
-            await postResultOnSlack(token, channel, username, iconEmoji, attachments);
+            await postResultOnSlack(token, channel, username, attachments);
           })();
         });
       }

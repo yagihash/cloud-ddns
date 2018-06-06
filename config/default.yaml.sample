@@ -4,7 +4,6 @@ config:
     token: 'xoxp-xxxxxxxxxxxx'
     channel: '#home'
     username: 'Cloud-DDNS'
-    iconEmoji: ':gcp:'
   managedZones:
     - name: 'xss-moe'
       ttl: 300
