@@ -53,7 +53,6 @@ const createSlackAttachments = (domainName, activeIp, currentIp) => JSON.stringi
     },
   ],
   footer: 'Sent via cloud-ddns',
-  footer_icon: ':gcp:',
   ts: Math.floor((new Date()).getTime() / 1000),
 }]);
 
