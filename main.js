@@ -87,7 +87,7 @@ const main = async () => {
     for (let domainName of managedZone.domainNames) {
       const zone = dns.zone(zoneName);
       const activeIp = await fetchActiveIp(zone, domainName);
-      if (currentIp !== activeIp || true) {
+      if (currentIp !== activeIp) {
         const diff = createRecordDiff(zone, domainName, ttl, currentIp, activeIp);
 
         zone.createChange(diff).then(function (data) {
