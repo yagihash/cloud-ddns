@@ -90,7 +90,7 @@ const main = async () => {
       if (currentIp !== activeIp) {
         const diff = createRecordDiff(zone, domainName, ttl, currentIp, activeIp);
 
-        zone.createChange(diff).then(function (data) {
+        zone.createChange(diff).then(function () {
           (async () => {
             const slackConfig = config.slack;
             const { token, channel, username, iconEmoji } = slackConfig;
