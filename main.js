@@ -2,89 +2,105 @@ const config = require('config').config;
 const DNS = require('@google-cloud/dns');
 const rp = require('request-promise');
 
-const projectId = config.projectId;
-const managedZones = config.managedZones;
+const fetchCurrentIp = async () => {
+  const { ip: currentIp } = await rp({
+    uri: 'https://ipinfo.io/',
+    method: 'GET',
+    json: true,
+  });
+  return currentIp;
+};
 
-const dns = new DNS({
-  projectId: projectId,
-});
+const fetchActiveIp = async (zone, domainName) => {
+  const [[{ data: [activeIp] }]] = await zone.getRecords({
+    name: domainName,
+    type: 'A',
+  });
+  return activeIp;
+};
 
-const zone = dns.zone('xss-moe');
+const createARecord = (zone, domainName, ttl, ip) => {
+  return zone.record('a', {
+    name: domainName,
+    ttl: ttl,
+    data: ip,
+  });
+};
 
-rp({
-  uri: 'https://ipinfo.io/',
-  method: 'GET',
-  json: true,
-}).then(function (data) {
-  const currentIp = data.ip;
+const createRecordDiff = (zone, domainName, ttl, currentIp, activeIp) => {
+  return {
+    add: createARecord(zone, domainName, ttl, currentIp),
+    delete: createARecord(zone, domainName, ttl, activeIp),
+  }
+};
+
+const createSlackAttachments = (domainName, activeIp, currentIp) => JSON.stringify([{
+  pretext: 'Cloud-DDNS updated your record.',
+  fallback: `Updated A record for ${domainName} from ${activeIp} to ${currentIp}`,
+  color: 'good',
+  title: domainName,
+  title_link: `http://${domainName.slice(-1)}/`,
+  fields: [
+    {
+      title: 'Previous record',
+      value: activeIp,
+      short: true,
+    },
+    {
+      title: 'New record',
+      value: currentIp,
+      short: true,
+    },
+  ],
+  footer: 'Sent via cloud-ddns',
+  footer_icon: ':gcp:',
+  ts: Math.floor((new Date()).getTime() / 1000),
+}]);
+
+const postResultOnSlack = async (token, channel, username, iconEmoji, attachments) => {
+  return await rp({
+    uri: 'https://slack.com/api/chat.postMessage',
+    method: 'POST',
+    form: {
+      token: token,
+      channel: channel,
+      username: username,
+      icon_emoji: iconEmoji,
+      attachments: attachments,
+    },
+    json: true,
+  });
+};
+
+const main = async () => {
+  const projectId = config.projectId;
+  const managedZones = config.managedZones;
+
+  const dns = new DNS({
+    projectId: projectId,
+  });
+
+  const currentIp = await fetchCurrentIp();
 
   for (let managedZone of managedZones) {
+    let { name: zoneName, ttl } = managedZone;
     for (let domainName of managedZone.domainNames) {
-      zone.getRecords({
-        name: domainName,
-        type: 'A',
-      }).then(function (data) {
-        const activeIp = data[0][0].data[0];
-        if (activeIp !== currentIp) {
-          const newRecord = zone.record('a', {
-            name: domainName,
-            ttl: managedZone.ttl,
-            data: currentIp,
-          });
+      const zone = dns.zone(zoneName);
+      const activeIp = await fetchActiveIp(zone, domainName);
+      if (currentIp !== activeIp || true) {
+        const diff = createRecordDiff(zone, domainName, ttl, currentIp, activeIp);
 
-          const oldRecord = zone.record('a', {
-            name: domainName,
-            ttl: managedZone.ttl,
-            data: activeIp,
-          });
-
-          const diff = {
-            add: newRecord,
-            delete: oldRecord,
-          }
-
-          zone.createChange(diff).then(function (data) {
-            const token = config.slack.token;
-            const channel = config.slack.channel;
-            const username = config.slack.username;
-            const iconEmoji = config.slack.iconEmoji;
-
-            rp({
-              uri: 'https://slack.com/api/chat.postMessage',
-              method: 'POST',
-              form: {
-                token: token,
-                channel: channel,
-                username: username,
-                icon_emoji: iconEmoji,
-                attachments: JSON.stringify([{
-                  pretext: 'Cloud-DDNS updated your record.',
-                  fallback: `Updated A record for ${domainName} from ${activeIp} to ${currentIp}`,
-                  color: 'good',
-                  title: domainName,
-                  title_link: `http://${domainName.slice(-1)}/`,
-                  fields: [
-                    {
-                      title: 'Previous record',
-                      value: activeIp,
-                      short: true,
-                    },
-                    {
-                      title: 'New record',
-                      value: currentIp,
-                      short: true,
-                    },
-                  ],
-                  footer: 'Sent via cloud-ddns',
-                  footer_icon: ':gcp:',
-                  ts: Math.floor((new Date()).getTime() / 1000),
-                }]),
-              },
-              json: true,
-            });
-          });
-        }
-      });
+        zone.createChange(diff).then(function (data) {
+          (async () => {
+            const slackConfig = config.slack;
+            const { token, channel, username, iconEmoji } = slackConfig;
+            const attachments = createSlackAttachments(domainName, activeIp, currentIp);
+            await postResultOnSlack(token, channel, username, iconEmoji, attachments);
+          })();
+        });
+      }
     }
   }
-});
+};
+
+main().catch((e) => console.log(e));
