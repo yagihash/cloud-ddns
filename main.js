@@ -35,7 +35,6 @@ const createRecordDiff = (zone, domainName, ttl, currentIp, activeIp) => {
 };
 
 const createSlackAttachments = (domainName, activeIp, currentIp) => JSON.stringify([{
-  pretext: 'Cloud-DDNS updated your record.',
   fallback: `Updated A record for ${domainName} from ${activeIp} to ${currentIp}`,
   color: 'good',
   title: domainName,
