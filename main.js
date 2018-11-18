@@ -1,5 +1,5 @@
 const config = require('config').config;
-const DNS = require('@google-cloud/dns');
+const {DNS} = require('@google-cloud/dns');
 const rp = require('request-promise');
 
 const fetchCurrentIp = async () => {
