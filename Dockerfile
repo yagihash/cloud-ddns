@@ -4,6 +4,8 @@ ARG SA_FILE=no_such_file
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=en_US.UTF-8
 
+WORKDIR /home/worker
+
 RUN groupadd -g 1000 worker && useradd -g worker -u 500 --create-home worker
 
 RUN apt-get update
