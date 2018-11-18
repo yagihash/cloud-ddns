@@ -25,6 +25,6 @@ COPY $SA_FILE /tmp/sa.json
 RUN cd /home/worker/ && npm install
 RUN chown -R worker:worker /home/worker/
 
-RUN echo '0-59/1 * * * * worker GOOGLE_APPLICATION_CREDENTIALS=/tmp/sa.json /usr/bin/node /home/worker/main.js' >> /etc/cron.d/ddns
+RUN echo '0-59/2 * * * * worker GOOGLE_APPLICATION_CREDENTIALS=/tmp/sa.json /usr/bin/node /home/worker/main.js' >> /etc/cron.d/ddns
 
 ENTRYPOINT cron -f
