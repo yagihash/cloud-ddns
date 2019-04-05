@@ -6,7 +6,7 @@
   "dependencies": {
     "@google-cloud/dns": "0.9.1",
     "config": "3.0.1",
-    "js-yaml": "3.12.2",
+    "js-yaml": "3.13.1",
     "request": "2.88.0",
     "request-promise": "4.2.4"
   },
