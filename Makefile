@@ -1,4 +1,4 @@
-BIN ?= server
+BIN ?= ddns
 JOB ?= build
 
 export GO111MODULE := on
