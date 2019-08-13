@@ -1,4 +1,4 @@
-BIN ?= ddns
+BIN := ddns
 JOB ?= build
 
 export GO111MODULE := on
@@ -13,7 +13,7 @@ run:
 
 .PHONY: build
 build:
-	@ go build -o bin/$(BIN) main.go
+	@ go build -o bin/$(BIN) cmd/$(BIN)/main.go
 
 .PHONY: setup
 setup:
