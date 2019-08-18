@@ -7,7 +7,7 @@ type ManagedZones struct {
 }
 
 type Zone struct {
-	Name    string   `json:"name"`
+	Name    string   `json:"dns_name"`
 	Records []string `json:"records"`
 }
 

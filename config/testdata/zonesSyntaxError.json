@@ -1,7 +1,7 @@
 {
   "zones": [
     {
-      "name": "example-jp",
+      "dns_name": "example.jp.",
       "records": []
     }
   ]

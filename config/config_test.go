@@ -29,14 +29,14 @@ const (
 {
   "zones": [
     {
-      "name": "example-com",
+      "dns_name": "example.com.",
       "records": [
         "example.com.",
         "*.example.com."
       ]
     },
     {
-      "name": "example-jp",
+      "dns_name": "example.jp.",
       "records": [
         "sub.example.jp."
       ]
