@@ -1,0 +1,17 @@
+{
+  "zones": [
+    {
+      "name": "example-com",
+      "records": [
+        "example.com.",
+        "*.example.com."
+      ]
+    },
+    {
+      "name": "example-jp",
+      "records": [
+        "sub.example.jp."
+      ]
+    }
+  ]
+}
