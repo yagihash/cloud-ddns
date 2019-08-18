@@ -3,6 +3,10 @@ JOB ?= build
 
 export GO111MODULE := on
 
+export ZONE_CONFIG ?= ./config/testdata/zones.json
+export SLACK_WEBHOOK ?= "https://hooks.slack.com/services/XXXXXXXXX/XXXXXXXXX/xxxxxxxxxxxxxxxxxxxxxxxx"
+export LOG_PATH ?= stdout
+
 .PHONY: download
 download:
 	@ go mod download
