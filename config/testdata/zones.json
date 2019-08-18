@@ -1,0 +1,17 @@
+{
+  "zones": [
+    {
+      "dns_name": "example.com.",
+      "records": [
+        "example.com.",
+        "*.example.com."
+      ]
+    },
+    {
+      "dns_name": "example.jp.",
+      "records": [
+        "sub.example.jp."
+      ]
+    }
+  ]
+}
