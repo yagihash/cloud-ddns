@@ -173,16 +173,6 @@ func TestLoad(t *testing.T) {
 	})
 }
 
-func TestZoneValidate(t *testing.T) {
-	z := &Zone{
-		Name:    "example-com",
-		Records: []string{},
-	}
-
-	err := z.validate()
-	assert.Error(t, err)
-}
-
 func (e *env) clone(t *testing.T) *env {
 	t.Helper()
 
