@@ -9,7 +9,7 @@ download:
 
 .PHONY: run
 run:
-	@ go run main.go
+	@ go run cmd/$(BIN)/main.go
 
 .PHONY: build
 build:
