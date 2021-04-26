@@ -4,7 +4,7 @@
   "description": "DDNS based on Cloud DNS",
   "main": "main.js",
   "dependencies": {
-    "@google-cloud/dns": "0.9.1",
+    "@google-cloud/dns": "0.9.2",
     "config": "3.0.1",
     "js-yaml": "3.12.2",
     "request": "2.88.0",
